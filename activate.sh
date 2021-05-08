@@ -1,2 +1,2 @@
-conda activate closest-competitors-roadtrip
+conda activate oracle
 jupyter-lab

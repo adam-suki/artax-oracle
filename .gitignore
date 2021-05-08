@@ -1,3 +1,7 @@
+# Project exclustion
+.Rapp.history
+py.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
