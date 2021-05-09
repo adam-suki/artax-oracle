@@ -68,8 +68,8 @@ def get_song_ids(artist_id):
             print("Page {} finished scraping".format(current_page))
             
             # Breaking early while testing
-            if current_page == 2:
-                break
+            #if current_page == 2:
+            #    break
         else:
             next_page = False
 
