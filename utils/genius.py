@@ -77,3 +77,25 @@ def get_song_ids(artist_id):
     songs = [song["id"] for song in songs
             if song["primary_artist"]["id"] == artist_id]
     return songs
+
+def connect_lyrics(song_id):
+    '''Constructs the path of song lyrics.'''
+    url = "songs/{}".format(song_id)
+    data = get_json(url)
+    path = data['response']['song']['path']
+    return path
+
+def retrieve_lyrics(song_id):
+    '''Retrieves lyrics from html page.'''
+    path = connect_lyrics(song_id)
+    URL = "http://genius.com" + path
+    page = requests.get(URL)
+
+    html = BeautifulSoup(page.text, "html.parser")
+    lyrics = html.find("div", class_="lyrics").get_text()
+    return lyrics
+
+def save_lyrics(filename, lyrics):
+    file = open(filename, 'w')
+    file.write(lyrics)
+    file.close()
