@@ -3,16 +3,17 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python
-  - pandas
-  - numpy
-  - ipykernel
-  - nb_conda_kernels
-  - jupyterlab
-  - matplotlib
-  - beautifulsoup4
-  - certifi
-  - chardet
-  - idna
-  - requests
-  - urllib3
+  - python=3.6
+  - pandas=1.2.4
+  - tensorflow=2.4.1
+  - numpy=1.19.5
+  - ipykernel=5.5.4
+  - nb_conda_kernels=2.3.1
+  - jupyterlab=3.0.14
+  - matplotlib=3.4.1
+  - beautifulsoup4=4.9.3
+  - certifi=2020.12.5
+  - chardet=4.0.0
+  - idna=2.10
+  - requests=2.25.1
+  - urllib3=1.26.4
