@@ -3,8 +3,8 @@ from midiutil import MIDIFile
 
 generated_folder = 'data/generated/'
 
-vowels = set("AEIOUaeiou")
-lyrics_vowels = []
+#vowels = set("AEIOUaeiou")
+vowels = set("OBCDEFGHIJKLMNOP")
 
 track    = 0
 channel  = 0
@@ -26,20 +26,19 @@ encoder = {
     'U' : 75,
 }
 
-def get_midi_from_vowels(filename):
-    midiname = filename.split('.')[0] + '.mid'
-    lyrics_vowels = []
+def get_midi_from_vowels(filename, postfix='', encoder=encoder):
+    midiname = filename.split('.')[0] + postfix + '.mid'
     with open(filename, 'r') as file:
         lyrics = file.read().replace('\n', '')
     degrees = [encoder[letter] for letter in lyrics if letter in vowels]
-    create_save_midi(midiname,  degrees, generated_folder)
+    create_save_midi(midiname, degrees)
 
-def create_save_midi(midiname, degrees, output_dir):
+def create_save_midi(midiname, degrees):
     MyMIDI = MIDIFile(1)  # One track, defaults to format 1 (tempo track is created automatically)
     MyMIDI.addTempo(track, time, tempo)
 
     for i, pitch in enumerate(degrees):
         MyMIDI.addNote(track, channel, pitch, time + i, duration, volume)
 
-    with open(str(output_dir + midiname), "wb") as output_file:
+    with open(midiname, "wb") as output_file:
         MyMIDI.writeFile(output_file)

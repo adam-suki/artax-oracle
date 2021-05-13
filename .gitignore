@@ -1,4 +1,6 @@
 # Project exclustion
+*.zip
+*.mid
 *.txt
 .Rapp.history
 py.py
