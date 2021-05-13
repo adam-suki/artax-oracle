@@ -6,13 +6,26 @@ from bs4 import BeautifulSoup
 
 base = "https://api.genius.com"
 
-def get_cat():
+def get_cat() -> None:
+    """Sets client access token from project root (genius.txt should be placed 
+    there with user's token)
+    """
     with open('genius.txt') as f:
         client_access_token = f.readline()
     return client_access_token
 
-def get_json(path, params=None, headers=None):
-    '''Send request and get response in json format.'''
+def get_json(path: str, 
+             params: str = None, 
+             headers: str = None) -> dict:
+    """Send request and get response in json format.
+
+    Args:
+        :param ``path``: URI path
+        :param ``params``: Query parameters (optional)
+        :param ``headers``: Request header (optional)
+    Returns:
+        None
+    """
     client_access_token = get_cat()
 
     requrl = '/'.join([base, path])
@@ -26,8 +39,14 @@ def get_json(path, params=None, headers=None):
     response.raise_for_status()
     return response.json()
 
-def search_genius(term):
-    '''Search Genius API via artist name.'''
+def search_genius(term: str)  -> None:
+    """Search Genius API via artist name.
+    
+    Args:
+        :param ``term``: Search term to query
+    Returns:
+        None
+    """
     client_access_token = get_cat()
     
     search = "/search?q="
@@ -50,8 +69,14 @@ def search_genius(term):
               ': ' + 
               item['result']['title'])
         
-def get_song_ids(artist_id):
-    '''Get all the song id from an artist.'''
+def get_song_ids(artist_id: int) -> list[str]:
+    """Get all the song id from an artist.
+    
+    Args:
+        :param ``artist_id``: Id of artist to collect their songs from
+    Returns:
+        List of song ids
+    """
     current_page = 1
     next_page = True
     songs = []
@@ -78,15 +103,27 @@ def get_song_ids(artist_id):
             if song["primary_artist"]["id"] == artist_id]
     return songs
 
-def connect_lyrics(song_id):
-    '''Constructs the path of song lyrics.'''
+def connect_lyrics(song_id: int)  -> str:
+    """Constructs the path of song lyrics.
+    
+    Args:
+        :param ``song_id``: Id of song to construct the path for
+    Returns:
+        URI path
+    """
     url = "songs/{}".format(song_id)
     data = get_json(url)
     path = data['response']['song']['path']
     return path
 
-def retrieve_lyrics(song_id):
-    '''Retrieves lyrics from html page.'''
+def retrieve_lyrics(song_id: int)  -> str:
+    """Retrieves lyrics from html page.
+    
+    Args:
+        :param ``song_id``: Id of song to extract the lyrics for
+    Returns:
+        Songs lyrics
+    """
     path = connect_lyrics(song_id)
     URL = "http://genius.com" + path
     page = requests.get(URL)
@@ -95,7 +132,16 @@ def retrieve_lyrics(song_id):
     lyrics = html.find("div", class_="lyrics").get_text()
     return lyrics
 
-def save_lyrics(filename, lyrics):
+def save_lyrics(filename: str,
+                lyrics: str)  -> None:
+    """Writes the collected lyrics to disk.
+    
+    Args:
+        :param ``filename``: Output file's name
+        :param ``lyrics``: String of lyrics
+    Returns:
+        None
+    """
     file = open(filename, 'w')
     file.write(lyrics)
     file.close()
